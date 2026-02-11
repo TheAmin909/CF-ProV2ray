@@ -3,6 +3,12 @@
 // @ts-ignore
 import { connect } from "cloudflare:sockets";
 
+// Global variables
+const dohURL = "https://cloudflare-dns.com/dns-query";
+async function getApiResponse() {
+  return null;
+}
+
 // How to generate your own UUID:
 // [Windows] Press "Win + R", input cmd and run:  Powershell -NoExit -Command "[guid]::NewGuid()"
 let userID = "db7dfe45-b10c-457c-81d2-0c934f3b0100";
@@ -339,7 +345,9 @@ async function \u0076\u006c\u0065\u0073\u0073OverWSHandler(request) {
             webSocket,
             \u0076\u006c\u0065\u0073\u0073ResponseHeader,
             log
-          );
+          ).catch((error) => {
+            return log("handleTCPOutBound has error", error);
+          });
         },
         close() {
           log(`readableWebSocketStream is close`);
@@ -839,6 +847,7 @@ async function handleUDPOutBound(webSocket, \u0076\u006c\u0065\u0073\u0073Respon
  * @returns {string}
  */
 function get\u0076\u006c\u0065\u0073\u0073Config(userID, hostName) {
+  hostName = hostName || "unknown.host";
   const w\u0076\u006c\u0065\u0073\u0073ws = `\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${CDNIP}:8880?encryption=none&security=none&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#${hostName}`;
   const p\u0076\u006c\u0065\u0073\u0073wstls = `\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${CDNIP}:8443?encryption=none&security=tls&type=ws&host=${hostName}&sni=${hostName}&fp=random&path=%2F%3Fed%3D2560#${hostName}`;
   const note = `سایت تهران نتورک：https://tehran.network\n کانال یوتوب تهران نتورک：https://www.youtube.com/@tehran.network01\nگروه تلگرام تهران نتورک：https://t.me/tehrannetworkgp\nکانال تلگرام：https://t.me/tehrannetwork021\n\nProxy IP global operation：${proxyIP}`;
